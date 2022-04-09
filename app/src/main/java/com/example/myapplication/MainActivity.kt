@@ -26,6 +26,8 @@ import java.util.concurrent.Executors
 class MainActivity : AppCompatActivity() {
     private var imageCapture: ImageCapture? = null
     private lateinit var cameraExecutor: ExecutorService
+    // Analyzer of the image that extracts the text from it
+    private lateinit var imageAnalyzer : ImageAnalyzer
 
     private fun startCamera(){
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
