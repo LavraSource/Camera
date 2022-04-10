@@ -13,10 +13,10 @@ import com.google.mlkit.vision.text.Text;
 
 public class MyLanguageIdentification{
     private final String TAG = MyLanguageIdentification.class.getSimpleName();
-    private LanguageIdentifier languageIdentifier =
+    private final LanguageIdentifier languageIdentifier =
             LanguageIdentification.getClient();
 
-    // Note: if architecture of project will change don't forget to change the params of this function
+    // Note: if architecture of project changes don't forget to change the params of this function
     public String identifyLanguage(Text text) {
         final String[] identifiedLanguageCode = new String[1];
         languageIdentifier.identifyLanguage(text.toString())
