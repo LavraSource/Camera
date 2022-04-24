@@ -17,7 +17,7 @@ public class MyLanguageIdentification{
             LanguageIdentification.getClient();
 
     // Note: if architecture of project changes don't forget to change the params of this function
-    public String identifyLanguage(Text text) {
+    public String identifyLanguage(String text) {
         final String[] identifiedLanguageCode = new String[1];
         languageIdentifier.identifyLanguage(text.toString())
                 .addOnSuccessListener(

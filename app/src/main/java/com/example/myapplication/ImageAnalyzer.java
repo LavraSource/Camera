@@ -21,6 +21,7 @@ import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 
 public class ImageAnalyzer implements ImageAnalysis.Analyzer {
     private final String TAG = ImageAnalyzer.class.getSimpleName();
+    private final MyTranslator translator = new MyTranslator();
     private TextRecognizer recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
 
     @Override
@@ -39,6 +40,7 @@ public class ImageAnalyzer implements ImageAnalysis.Analyzer {
                                     // Task completed successfully
                                     Log.i(TAG, "Image analysis went successfully. Extracting the text");
                                     String resultText = visionText.getText();
+                                    translator.translate(resultText);
                                     // Extracting blocks of the text.
                                     // To LavraSource: there we can start visualising the borders of each line &
                                     // insert the translation
