@@ -41,6 +41,7 @@ dependencies {
     // ML Kit tools
     implementation 'com.google.android.gms:play-services-mlkit-text-recognition:18.0.0'
     implementation 'com.google.mlkit:language-id:17.0.3'
+    implementation 'com.google.mlkit:translate:17.0.0'
 
     implementation "androidx.camera:camera-view:${camerax_version}"
     implementation "androidx.camera:camera-extensions:${camerax_version}"

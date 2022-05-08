@@ -1,6 +1,8 @@
 package com.example.myapplication;
 
 import android.annotation.SuppressLint;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.media.Image;
 import android.util.Log;
 
@@ -19,13 +21,14 @@ import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 
 public class ImageAnalyzer implements ImageAnalysis.Analyzer {
     private final String TAG = ImageAnalyzer.class.getSimpleName();
+    private final MyTranslator translator = new MyTranslator();
     private TextRecognizer recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
 
     @Override
     public void analyze(@NonNull ImageProxy imageProxy) {
         @SuppressLint("UnsafeOptInUsageError") Image mediaImage = imageProxy.getImage();
         if (mediaImage != null) {
-            // Get ready to use image with calculated rotation degrees to work with
+            // Get a ready to use image with calculated rotation degrees to work with
             InputImage image =
                     InputImage.fromMediaImage(mediaImage, imageProxy.getImageInfo().getRotationDegrees());
 
@@ -37,7 +40,25 @@ public class ImageAnalyzer implements ImageAnalysis.Analyzer {
                                     // Task completed successfully
                                     Log.i(TAG, "Image analysis went successfully. Extracting the text");
                                     String resultText = visionText.getText();
-                                    // TODO: Extract block of the text for further translation
+                                    translator.translate(resultText);
+                                    // Extracting blocks of the text.
+                                    // To LavraSource: there we can start visualising the borders of each line &
+                                    // insert the translation
+                                    for (Text.TextBlock block : visionText.getTextBlocks()) {
+                                        String blockText = block.getText();
+                                        Point[] blockCornerPoints = block.getCornerPoints();
+                                        Rect blockFrame = block.getBoundingBox();
+                                        for (Text.Line line : block.getLines()) {
+                                            String lineText = line.getText();
+                                            Point[] lineCornerPoints = line.getCornerPoints();
+                                            Rect lineFrame = line.getBoundingBox();
+                                            for (Text.Element element : line.getElements()) {
+                                                String elementText = element.getText();
+                                                Point[] elementCornerPoints = element.getCornerPoints();
+                                                Rect elementFrame = element.getBoundingBox();
+                                            }
+                                        }
+                                    }
                                 }
                             })
                             .addOnFailureListener(
