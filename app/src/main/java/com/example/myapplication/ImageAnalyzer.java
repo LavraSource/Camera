@@ -19,10 +19,13 @@ import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 
+import java.util.ArrayList;
+//TODO Make this to work like here(https://developer.android.com/codelabs/camerax-getting-started#5). Currently i can't bind this to the camera/
 public class ImageAnalyzer implements ImageAnalysis.Analyzer {
     private final String TAG = ImageAnalyzer.class.getSimpleName();
     private final MyTranslator translator = new MyTranslator();
     private TextRecognizer recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
+    public static ArrayList<Rect> blocks = new ArrayList<>();
 
     @Override
     public void analyze(@NonNull ImageProxy imageProxy) {
@@ -40,14 +43,20 @@ public class ImageAnalyzer implements ImageAnalysis.Analyzer {
                                     // Task completed successfully
                                     Log.i(TAG, "Image analysis went successfully. Extracting the text");
                                     String resultText = visionText.getText();
-                                    translator.translate(resultText);
+                                    if(resultText!=null) {
+                                        translator.
+                                                translate(resultText);
+                                    }
                                     // Extracting blocks of the text.
                                     // To LavraSource: there we can start visualising the borders of each line &
                                     // insert the translation
+                                    blocks=new ArrayList<>();
                                     for (Text.TextBlock block : visionText.getTextBlocks()) {
                                         String blockText = block.getText();
                                         Point[] blockCornerPoints = block.getCornerPoints();
                                         Rect blockFrame = block.getBoundingBox();
+                                        blocks.add(blockFrame);
+
                                         for (Text.Line line : block.getLines()) {
                                             String lineText = line.getText();
                                             Point[] lineCornerPoints = line.getCornerPoints();
