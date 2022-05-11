@@ -22,7 +22,7 @@ public class MyTranslator {
     // TODO: Convert returning type to string after creating the architecture of the project
     // Note: Don't forget about target language to translate as a parameter
     public void translate(String text) {
-        if(text!=null) {
+        if(text!=null&&languageIdentification.identifyLanguage(text)!=null) {
             TranslatorOptions options =
                     new TranslatorOptions.Builder()
                             .setSourceLanguage(Objects.requireNonNull(TranslateLanguage.fromLanguageTag(
