@@ -18,6 +18,9 @@ class RectOverlay {
             val paint = Paint()
             paint.color = Color.BLUE
             paint.style = Paint.Style.STROKE
+            if(ImageAnalyzer.blocks.size>0){
+                canvas.drawCircle(100f,100f,20f,paint)
+            }
             while (iter.hasNext()){
                 canvas.drawRect(iter.next(), paint)
             }
