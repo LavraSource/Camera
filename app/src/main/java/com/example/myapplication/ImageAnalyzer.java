@@ -20,7 +20,7 @@ import com.google.mlkit.vision.text.TextRecognizer;
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 
 import java.util.ArrayList;
-//TODO Make this to work like here(https://developer.android.com/codelabs/camerax-getting-started#5). Currently i can't bind this to the camera/
+
 public class ImageAnalyzer implements ImageAnalysis.Analyzer {
     private final String TAG = ImageAnalyzer.class.getSimpleName();
     private final MyTranslator translator = new MyTranslator();
