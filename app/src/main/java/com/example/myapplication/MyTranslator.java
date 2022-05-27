@@ -1,11 +1,13 @@
 package com.example.myapplication;
 
+import android.graphics.Rect;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.mlkit.common.model.DownloadConditions;
 import com.google.mlkit.nl.translate.TranslateLanguage;
 import com.google.mlkit.nl.translate.Translation;
@@ -13,15 +15,19 @@ import com.google.mlkit.nl.translate.Translator;
 import com.google.mlkit.nl.translate.TranslatorOptions;
 import com.google.mlkit.vision.text.Text;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class MyTranslator {
     private final String TAG = MyTranslator.class.getSimpleName();
     private final MyLanguageIdentification languageIdentification = new MyLanguageIdentification();
+    Task<String> stringTask;
 
     // TODO: Convert returning type to string after creating the architecture of the project
     // Note: Don't forget about target language to translate as a parameter
-    public void translate(String text) {
+    public static ArrayList<Rect> blocks = new ArrayList<>();
+    public static ArrayList<String> texts = new ArrayList<>();
+    public void translate(String text, Rect rect) {
         if(text!=null&&languageIdentification.identifyLanguage(text)!=null) {
             TranslatorOptions options =
                     new TranslatorOptions.Builder()
@@ -49,17 +55,18 @@ public class MyTranslator {
                             Log.i(TAG, "Downloading of model went wrong.");
                         }
                     });
-            toTargetLanguageTranslator.translate(String.valueOf(text))
+            stringTask= toTargetLanguageTranslator.translate(String.valueOf(text))
                     .addOnSuccessListener(new OnSuccessListener<String>() {
                         @Override
                         public void onSuccess(String s) {
-                            ImageAnalyzer.text.add(s);
+                            blocks.add(rect);
+                            texts.add(s);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            ImageAnalyzer.text.add("ERROR");
+                            Log.i(TAG, e.getMessage());
                         }
                     });
         }

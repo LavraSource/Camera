@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageProxy;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -25,13 +26,13 @@ public class ImageAnalyzer implements ImageAnalysis.Analyzer {
     private final String TAG = ImageAnalyzer.class.getSimpleName();
     private final MyTranslator translator = new MyTranslator();
     private TextRecognizer recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
-    public static ArrayList<Rect> blocks = new ArrayList<>();
-    public static ArrayList<String> text = new ArrayList<>();
 
     @Override
     public void analyze(@NonNull ImageProxy imageProxy) {
         @SuppressLint("UnsafeOptInUsageError") Image mediaImage = imageProxy.getImage();
         Log.i(TAG, "Image analysis started");
+        //MyTranslator.texts=new ArrayList<>();
+        //MyTranslator.blocks=new ArrayList<>();
         if (mediaImage != null) {
             // Get a ready to use image with calculated rotation degrees to work with
             InputImage image =
@@ -44,20 +45,17 @@ public class ImageAnalyzer implements ImageAnalysis.Analyzer {
                                 public void onSuccess(Text visionText) {
                                     // Task completed successfully
                                     Log.i(TAG, "Image analysis went successfully. Extracting the text");
-                                    String resultText = visionText.getText();
-                                    if(resultText!=null) {
-                                        translator.
-                                                translate(resultText);
-                                    }
+
                                     // Extracting blocks of the text.
                                     // To LavraSource: there we can start visualising the borders of each line &
                                     // insert the translation
-                                    blocks=new ArrayList<>();
+
                                     for (Text.TextBlock block : visionText.getTextBlocks()) {
                                         String blockText = block.getText();
+
                                         Point[] blockCornerPoints = block.getCornerPoints();
                                         Rect blockFrame = block.getBoundingBox();
-                                        blocks.add(blockFrame);
+                                        translator.translate(blockText, blockFrame);
 
                                         for (Text.Line line : block.getLines()) {
                                             String lineText = line.getText();
@@ -72,6 +70,7 @@ public class ImageAnalyzer implements ImageAnalysis.Analyzer {
                                     }
                                 }
                             })
+
                             .addOnFailureListener(
                                     new OnFailureListener() {
                                         @Override
@@ -79,8 +78,15 @@ public class ImageAnalyzer implements ImageAnalysis.Analyzer {
                                             // Task failed with an exception
                                             Log.i(TAG, e.getMessage());
                                         }
-                                    });
+                                    })
+                            .addOnCompleteListener(new OnCompleteListener<Text>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Text> task) {
+                                    mediaImage.close();
+                                    imageProxy.close();
+                                }
+                            });
+
         }
-        imageProxy.close();
     }
 }
