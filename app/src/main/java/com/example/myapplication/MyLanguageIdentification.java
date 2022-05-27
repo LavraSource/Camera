@@ -24,7 +24,7 @@ public class MyLanguageIdentification{
                         new OnSuccessListener<String>() {
                             @Override
                             public void onSuccess(@Nullable String languageCode) {
-                                identifiedLanguageCode[0] = languageCode;
+                                MyTranslator.finalLang = languageCode;
                                 if (languageCode.equals("und")) {
                                     Log.i(TAG, "Can't identify language.");
                                 } else {

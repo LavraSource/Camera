@@ -23,16 +23,16 @@ public class MyTranslator {
     private final MyLanguageIdentification languageIdentification = new MyLanguageIdentification();
     Task<String> stringTask;
 
-    // TODO: Convert returning type to string after creating the architecture of the project
-    // Note: Don't forget about target language to translate as a parameter
+    public static String finalLang = "und";
     public static ArrayList<Rect> blocks = new ArrayList<>();
     public static ArrayList<String> texts = new ArrayList<>();
     public void translate(String text, Rect rect) {
-        if(text!=null&&languageIdentification.identifyLanguage(text)!=null) {
+        if(!finalLang.equals("und")) {
+            Log.i(TAG,"Translation started");
             TranslatorOptions options =
                     new TranslatorOptions.Builder()
                             .setSourceLanguage(Objects.requireNonNull(TranslateLanguage.fromLanguageTag(
-                                    languageIdentification.identifyLanguage(text)))
+                                    finalLang))
                             )
                             .setTargetLanguage(TranslateLanguage.RUSSIAN)
                             .build();
@@ -59,6 +59,7 @@ public class MyTranslator {
                     .addOnSuccessListener(new OnSuccessListener<String>() {
                         @Override
                         public void onSuccess(String s) {
+                            Log.i(TAG, s);
                             blocks.add(rect);
                             texts.add(s);
                         }

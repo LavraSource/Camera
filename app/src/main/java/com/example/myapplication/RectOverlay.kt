@@ -15,8 +15,10 @@ class RectOverlay {
 
         override fun onDraw(canvas: Canvas) {
             super.onDraw(canvas)
-            val iter = MyTranslator.blocks.iterator();
-            val sr = MyTranslator.texts.iterator();
+            val bl = MyTranslator.blocks
+            val tx = MyTranslator.texts
+            val iter = bl.iterator()
+            val sr = tx.iterator()
             val paint = Paint()
             paint.color = Color.BLUE
             paint.style = Paint.Style.FILL
@@ -24,7 +26,7 @@ class RectOverlay {
 
             while (iter.hasNext()&&sr.hasNext()){
                 val rect=iter.next()
-                canvas.drawText(sr.next(), rect.top.toFloat(), rect.left.toFloat(), paint)
+                canvas.drawText(sr.next(), rect.left.toFloat(), rect.top.toFloat(), paint)
             }
             invalidate()
         }

@@ -25,19 +25,20 @@ import java.util.ArrayList;
 public class ImageAnalyzer implements ImageAnalysis.Analyzer {
     private final String TAG = ImageAnalyzer.class.getSimpleName();
     private final MyTranslator translator = new MyTranslator();
+    private final MyLanguageIdentification languageIdentification = new MyLanguageIdentification();
     private TextRecognizer recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
 
     @Override
     public void analyze(@NonNull ImageProxy imageProxy) {
         @SuppressLint("UnsafeOptInUsageError") Image mediaImage = imageProxy.getImage();
         Log.i(TAG, "Image analysis started");
-        //MyTranslator.texts=new ArrayList<>();
-        //MyTranslator.blocks=new ArrayList<>();
+
         if (mediaImage != null) {
             // Get a ready to use image with calculated rotation degrees to work with
             InputImage image =
                     InputImage.fromMediaImage(mediaImage, imageProxy.getImageInfo().getRotationDegrees());
-
+            MyTranslator.texts = new ArrayList<>();
+            MyTranslator.blocks = new ArrayList<>();
             Task<Text> result =
                     recognizer.process(image)
                             .addOnSuccessListener(new OnSuccessListener<Text>() {
@@ -52,7 +53,7 @@ public class ImageAnalyzer implements ImageAnalysis.Analyzer {
 
                                     for (Text.TextBlock block : visionText.getTextBlocks()) {
                                         String blockText = block.getText();
-
+                                        languageIdentification.identifyLanguage(blockText);
                                         Point[] blockCornerPoints = block.getCornerPoints();
                                         Rect blockFrame = block.getBoundingBox();
                                         translator.translate(blockText, blockFrame);
