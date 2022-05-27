@@ -26,6 +26,7 @@ public class ImageAnalyzer implements ImageAnalysis.Analyzer {
     private final MyTranslator translator = new MyTranslator();
     private TextRecognizer recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
     public static ArrayList<Rect> blocks = new ArrayList<>();
+    public static ArrayList<String> text = new ArrayList<>();
 
     @Override
     public void analyze(@NonNull ImageProxy imageProxy) {
@@ -76,9 +77,10 @@ public class ImageAnalyzer implements ImageAnalysis.Analyzer {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
                                             // Task failed with an exception
-                                            Log.i(TAG, "Image analysis went wrong.");
+                                            Log.i(TAG, e.getMessage());
                                         }
                                     });
         }
+        imageProxy.close();
     }
 }

@@ -53,14 +53,13 @@ public class MyTranslator {
                     .addOnSuccessListener(new OnSuccessListener<String>() {
                         @Override
                         public void onSuccess(String s) {
-                            // TODO: Extract the translated text
-                            Log.i(TAG, "Translated successfully! Extracting the translated text.");
+                            ImageAnalyzer.text.add(s);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.i(TAG, "Translation of the text went wrong.");
+                            ImageAnalyzer.text.add("ERROR");
                         }
                     });
         }

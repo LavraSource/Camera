@@ -15,14 +15,14 @@ class RectOverlay {
         override fun onDraw(canvas: Canvas) {
             super.onDraw(canvas)
             val iter = ImageAnalyzer.blocks.iterator();
+            val sr = ImageAnalyzer.text.iterator();
             val paint = Paint()
             paint.color = Color.BLUE
-            paint.style = Paint.Style.STROKE
-            if(ImageAnalyzer.blocks.size>0){
-                canvas.drawCircle(100f,100f,20f,paint)
-            }
+            paint.style = Paint.Style.FILL
+
             while (iter.hasNext()){
-                canvas.drawRect(iter.next(), paint)
+                val rect=iter.next()
+                canvas.drawText(sr.next(), rect.top.toFloat(), rect.left.toFloat(), paint)
             }
             invalidate()
         }
