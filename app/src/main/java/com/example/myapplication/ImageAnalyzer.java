@@ -30,6 +30,7 @@ public class ImageAnalyzer implements ImageAnalysis.Analyzer {
     @Override
     public void analyze(@NonNull ImageProxy imageProxy) {
         @SuppressLint("UnsafeOptInUsageError") Image mediaImage = imageProxy.getImage();
+        Log.i(TAG, "Image analysis started");
         if (mediaImage != null) {
             // Get a ready to use image with calculated rotation degrees to work with
             InputImage image =
