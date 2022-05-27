@@ -15,7 +15,6 @@ class RectOverlay {
 
         override fun onDraw(canvas: Canvas) {
             super.onDraw(canvas)
-            val translator = MyTranslator()
             val iter = MyTranslator.blocks.iterator();
             val sr = MyTranslator.texts.iterator();
             val paint = Paint()
