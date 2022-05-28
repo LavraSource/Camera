@@ -31,9 +31,7 @@ public class MyTranslator {
             Log.i(TAG,"Translation started");
             TranslatorOptions options =
                     new TranslatorOptions.Builder()
-                            .setSourceLanguage(Objects.requireNonNull(TranslateLanguage.fromLanguageTag(
-                                    finalLang))
-                            )
+                            .setSourceLanguage(TranslateLanguage.ENGLISH)
                             .setTargetLanguage(TranslateLanguage.RUSSIAN)
                             .build();
             final Translator toTargetLanguageTranslator = Translation.getClient(options);

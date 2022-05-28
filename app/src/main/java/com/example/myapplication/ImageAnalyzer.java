@@ -27,6 +27,7 @@ public class ImageAnalyzer implements ImageAnalysis.Analyzer {
     private final MyTranslator translator = new MyTranslator();
     private final MyLanguageIdentification languageIdentification = new MyLanguageIdentification();
     private TextRecognizer recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
+    public static ArrayList<Rect> checkBlock=new ArrayList<>();
 
     @Override
     public void analyze(@NonNull ImageProxy imageProxy) {
@@ -50,12 +51,13 @@ public class ImageAnalyzer implements ImageAnalysis.Analyzer {
                                     // Extracting blocks of the text.
                                     // To LavraSource: there we can start visualising the borders of each line &
                                     // insert the translation
-
+                                    checkBlock=new ArrayList<>();
                                     for (Text.TextBlock block : visionText.getTextBlocks()) {
                                         String blockText = block.getText();
                                         languageIdentification.identifyLanguage(blockText);
                                         Point[] blockCornerPoints = block.getCornerPoints();
                                         Rect blockFrame = block.getBoundingBox();
+                                        checkBlock.add(blockFrame);
                                         translator.translate(blockText, blockFrame);
 
                                         for (Text.Line line : block.getLines()) {
