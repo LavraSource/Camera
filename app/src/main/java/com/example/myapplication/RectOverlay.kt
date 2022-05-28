@@ -16,7 +16,7 @@ class RectOverlay {
         override fun onDraw(canvas: Canvas) {
             super.onDraw(canvas)
             val paint = Paint()
-            paint.color = Color.WHITE
+            paint.color = Color.BLUE
             paint.style = Paint.Style.FILL
             paint.textSize=60f;
             val bl = MyTranslator.blocks
